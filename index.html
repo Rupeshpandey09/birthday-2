@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
+        
+        :root {
+            --primary: #ff6b8b;
+            --secondary: #ffb8c6;
+            --dark-pink: #d6336c;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .dancing-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .card {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 30px -10px rgba(214, 51, 108, 0.3);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 0 20px 40px -10px rgba(214, 51, 108, 0.4);
+        }
+        
+        .bounce {
+            animation: bounce 3s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .heartbeat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0;
+            z-index: 999;
+            animation: confettiFall 5s linear forwards;
+        }
+        
+        .lantern {
+            position: fixed;
+            width: 40px;
+            height: 60px;
+            background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3ef7ad9d-f47c-477d-9ad7-6dea33301b3c.png') no-repeat;
+            opacity: 0;
+            z-index: 998;
+            animation: lanternFloat 8s ease-in forwards;
+        }
+        
+        @keyframes lanternFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(10deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-pink-100 to-rose-100 opacity-60"></div>
+        <div class="absolute top-0 left-0 w-full h-full flex flex-wrap overflow-hidden">
+            <!-- Confetti background -->
+            <div id="confetti-container"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-6xl md:text-8xl font-bold dancing-font text-rose-600 mb-6 bounce">
+                Happy Birthday!
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-700 mb-8 max-w-2xl mx-auto">
+                <span class="text-rose-600 font-semibold">My Dearest Love</span>, your special day is here! 
+                Even cartoon characters wanted to wish you an amazing birthday!
+            </p>
+            <div class="heartbeat inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="#d6336c">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-0 w-full text-center">
+            <svg class="mx-auto w-12 h-12 text-rose-500 animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+        </div>
+    </section>
+    
+    <!-- Cartoon Wishes Section -->
+    <section class="py-20 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl dancing-font text-rose-600 mb-4">
+                Birthday Wishes from Cartoon Friends
+            </h2>
+            <div class="w-24 h-1 bg-rose-400 mx-auto"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Mickey Mouse -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-rose-200 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cc87107a-92c6-455b-b520-1664b3d6d719.png" alt="Mickey Mouse wearing a party hat and holding balloons in front of a birthday cake, classic Disney style with bright colors" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Mickey Mouse</h3>
+                <p class="text-gray-600 mb-4">"Happy Birthday, pal! Hope your day is as fun as a day at Disneyland!"</p>
+                <div class="mt-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ff0000">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- SpongeBob -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-yellow-300 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d7549ae9-bf0c-4d37-8db7-98d735ad5aa0.png" alt="SpongeBob SquarePants laughing with a party hat on, standing in his pineapple house holding a colorful birthday cake, bright Nickelodeon cartoon style" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">SpongeBob</h3>
+                <p class="text-gray-600 mb-4">"Happy Birthday! I made you a Krabby Patty cake! Okay, maybe I ate some of it... but the thought counts!"</p>
+                <div class="mt-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffcc00">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Hello Kitty -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-pink-300 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/06ac9e7c-cf1a-41d3-9054-4e7379397945.png" alt="Hello Kitty wearing a pink birthday crown and holding a basket of cupcakes, surrounded by hearts and stars in typical kawaii style" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Hello Kitty</h3>
+                <p class="text-gray-600 mb-4">"Sanrio blessings for your birthday! May your day be as sweet as strawberry cake!"</p>
+                <div class="mt-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ff9eb5">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Pikachu -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-yellow-400 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/db24f252-bbe5-40ae-a184-535f10da53e2.png" alt="Pikachu cheering with sparks of electricity around him, wearing a party hat with Pokeball design, vibrant Pokemon anime style" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Pikachu</h3>
+                <p class="text-gray-600 mb-4">"Pika Pika! Happy Birthday! I'll shock your year with happiness!"</p>
+                <div class="mt-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#f6c101">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Minions -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-blue-300 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b6e86983-b298-4a9c-b586-74af860f47b3.png" alt="Group of Minions from Despicable Me dressed in party gear throwing confetti and making funny faces, Illumination animation style" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Minions</h3>
+                <p class="text-gray-600 mb-4">"BANANA! Tulaliloo ti amo! Happy Birthday from all of us!"</p>
+                <div class="mt-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#f1c40f">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Bugs Bunny -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-gray-300 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3020bba3-8282-4f4c-bbd7-c87d47be0cd7.png" alt="Bugs Bunny leaning on a carrot with one foot crossed over the other, wearing sunglasses and giving a thumbs up, classic Warner Bros. cartoon style" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Bugs Bunny</h3>
+                <p class="text-gray-600 mb-4">"Eh, what's up, birthday girl? Hope it's a totally looney-tunes wonderful day!"</p>
+                <div class="mt-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#666666">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Asian Actors Wishes Section -->
+    <section class="py-20 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl dancing-font text-rose-600 mb-4">
+                International Birthday Wishes
+            </h2>
+            <div class="w-24 h-1 bg-rose-400 mx-auto"></div>
+            <p class="text-xl text-gray-600 mt-4">Celebrities from across Asia send their warmest wishes</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Korean Actor 1 - Lee Min-ho -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-blue-200 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/87a68ac1-5454-41de-a747-82e977d29764.png" alt="Lee Min-ho smiling in elegant suit with birthday cake background" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Lee Min-ho</h3>
+                <p class="text-gray-600 mb-2">"생일 축하합니다! (Happy Birthday!) May your year be as bright as your beautiful smile!"</p>
+                <p class="text-sm text-gray-500">Korean Actor</p>
+            </div>
+
+            <!-- Korean Actor 2 - Hyun Bin -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-blue-300 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e2b38e0c-3090-4d51-89c3-2543240856d6.png" alt="Hyun Bin in stylish formal wear holding champagne flute" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Hyun Bin</h3>
+                <p class="text-gray-600 mb-2">"사랑하는 당신의 생일을 축하합니다 (Happy birthday)! Your happiness is my greatest wish."</p>
+                <p class="text-sm text-gray-500">Korean Actor</p>
+            </div>
+
+            <!-- Chinese Actor 1 - Wang Yibo -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-red-200 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dfc53152-5b3c-42e4-99e5-57bbd3beab52.png" alt="Wang Yibo in casual chic outfit with festive balloons" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Wang Yibo</h3>
+                <p class="text-gray-600 mb-2">"生日快乐! (Happy Birthday!) May all your dreams come true this year!"</p>
+                <p class="text-sm text-gray-500">Chinese Actor</p>
+            </div>
+
+            <!-- Chinese Actor 2 - Xiao Zhan -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-red-300 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2c2b71df-32c9-404f-b58e-c56c8392db2d.png" alt="Xiao Zhan smiling warmly with confetti background" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Xiao Zhan</h3>
+                <p class="text-gray-600 mb-2">"祝你生日快乐! (Wishing you a happy birthday!) May your special day be filled with joy!"</p>
+                <p class="text-sm text-gray-500">Chinese Actor</p>
+            </div>
+
+            <!-- Japanese Actor 1 - Takeru Satoh -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-rose-200 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/223b8667-d51c-4922-9614-6dbb1ef6a0a0.png" alt="Takeru Satoh in traditional kimono celebration" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Takeru Satoh</h3>
+                <p class="text-gray-600 mb-2">"お誕生日おめでとうございます (Happy Birthday)! May your year be as wonderful as you are!"</p>
+                <p class="text-sm text-gray-500">Japanese Actor</p>
+            </div>
+
+            <!-- Japanese Actor 2 - Kento Yamazaki -->
+            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
+                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-rose-300 shadow-lg">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b0c62bc3-fe29-430a-ba8b-fe39771b67e3.png" alt="Kento Yamazaki with birthday cake and flowers" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Kento Yamazaki</h3>
+                <p class="text-gray-600 mb-2">"素晴らしい1年になりますように (Wishing you a wonderful year)! Happy Birthday!"</p>
+                <p class="text-sm text-gray-500">Japanese Actor</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Letter Section -->
+    <section class="py-20 px-4 bg-rose-50">
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="md:flex">
+                <div class="md:w-2/5 bg-rose-100 p-8 flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-lg">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4c5d2bfc-085b-4cf4-8751-88b15f395aa5.png" alt="Romantic pink envelope with heart-shaped seal on wooden table with rose petals scattered around it, soft focus background" class="w-full h-full object-cover" />
+                        </div>
+                        <h3 class="text-2xl font-bold text-rose-700 mb-2 dancing-font">My Dearest</h3>
+                        <p class="text-gray-600">With all my love!</p>
+                    </div>
+                </div>
+                <div class="md:w-3/5 p-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 dancing-font">My Special Message For You</h2>
+                    <div class="prose max-w-none text-gray-700">
+                        <p>My Love,</p>
+                        <p>On your special day, I wanted to create something as unique and wonderful as you are. That's why even your favorite cartoon characters wanted to join in celebrating you!</p>
+                        <p>You bring joy, laughter and love into my life every day - much more than any of these characters bring to their shows. Your kindness sparkles brighter than Pikachu's electricity, your warmth is more comforting than Hello Kitty's world, and your smile is more enchanting than any Disney magic.</p>
+                        <p>May this birthday be the start of your most wonderful year yet - filled with love, happiness and all the things that bring you joy. I'm so grateful to be part of your life's journey.</p>
+                        <p>With all my heart,<br>Your Loving Partner</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final Celebration -->
+    <section class="py-20 px-4 text-center bg-gradient-to-r from-rose-100 to-pink-100">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl md:text-5xl dancing-font text-rose-700 mb-8 float">Make a Wish!</h2>
+            <div class="mb-10 mx-auto max-w-md">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/03f22a2e-068e-40ef-a40c-f0c5dabf0430.png" alt="Beautiful birthday cake with multiple tiers, pink frosting and flowers, surrounded by floating hearts and sparkles in magical animation style" class="w-full rounded-xl shadow-lg" />
+            </div>
+            <button id="wishBtn" class="px-8 py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-full text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-50 shadow-lg">
+                Blow Out the Candles
+            </button>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-10 bg-rose-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="mb-2">Created with all my love for your special day</p>
+            <p>© <span id="year"></span> Birthday Wishes from Your Favorite Cartoons</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+        
+        // Confetti effect
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // Random properties
+                const size = Math.random() * 10 + 5;
+                const posX = Math.random() * window.innerWidth;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 3 + 3;
+                
+                // Different shapes
+                const shapes = ['circle', 'square', 'triangle'];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                
+                // Different colors
+                const colors = ['#ff6b8b', '#ffb8c6', '#d6336c', '#ff8fab', '#f06595'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.left = `${posX}px`;
+                confetti.style.backgroundColor = color;
+                confetti.style.animationDelay = `${delay}s`;
+                confetti.style.animationDuration = `${duration}s`;
+                
+                // Apply shapes
+                if (shape === 'circle') {
+                    confetti.style.borderRadius = '50%';
+                }
+                
+                container.appendChild(confetti);
+            }
+        }
+        
+        // Initialize some confetti
+        createConfetti();
+        
+        // Blow out candles button
+        document.getElementById('wishBtn').addEventListener('click', function() {
+            createConfetti();
+            
+            // Create floating hearts animation
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ff6b8b">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    `;
+                    heart.style.position = 'fixed';
+                    heart.style.bottom = '20%';
+                    heart.style.left = `${Math.random() * 100}%`;
+                    heart.style.transform = 'translateY(0)';
+                    heart.style.zIndex = '999';
+                    heart.style.animation = `floatUp ${Math.random() * 2 + 2}s ease-in forwards`;
+                    
+                    document.body.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3000);
+                }, i * 200);
+            }
+            
+            // Create keyframes for floating hearts
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes floatUp {
+                    to {
+                        transform: translateY(-100vh) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Show alert
+            alert("Your wish will come true my love! Happy Happy Birthday!");
+            
+            // Create floating lanterns
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const lantern = document.createElement('div');
+                    lantern.classList.add('lantern');
+                    lantern.style.left = `${Math.random() * 100}%`;
+                    lantern.style.animationDelay = `${i * 0.5}s`;
+                    document.body.appendChild(lantern);
+                    
+                    setTimeout(() => {
+                        lantern.remove();
+                    }, 8000);
+                }, i * 500);
+            }
+        });
+    </script>
+</body>
+</html>
+
