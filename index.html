@@ -1,468 +1,655 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday My Love!</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
-        
-        :root {
-            --primary: #ff6b8b;
-            --secondary: #ffb8c6;
-            --dark-pink: #d6336c;
+import React, { useState, useRef, useEffect } from 'react';
+import { Heart, Music, Mail, Sparkles, Play, Pause, Volume2, Star, Gift } from 'lucide-react';
+
+const PrincessDayExperience = () => {
+  const [currentSection, setCurrentSection] = useState(0);
+  const [flippedCards, setFlippedCards] = useState({});
+  const [isPlaying, setIsPlaying] = useState(null);
+  const [hearts, setHearts] = useState([]);
+  const audioRef = useRef(null);
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dateString = tomorrow.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+
+  const songs = [
+    { 
+      title: "Bachaake Rakhungi", 
+      artist: "For You",
+      color: "from-rose-400 via-pink-400 to-red-400",
+      url: "https://github.com/Rupeshpandey09/11/raw/refs/heads/main/Bachaake%20rakhungi%20sabhi%20uljhano%20se%20_%20Mahima%20Chaudhry%20_%20Gumnaam%20_%20WhatsApp%20status%20song%20%5BrFRX5J4GTdk%5D.mp3"
+    },
+    { 
+      title: "Kitni Mohabbat Hai", 
+      artist: "For My Princess",
+      color: "from-purple-400 via-pink-400 to-rose-400",
+      url: "https://github.com/Rupeshpandey09/11/raw/refs/heads/main/90s%20Song%20Kitni%20Mohabbat%20Hai%20Tumse%20Jara%20Pass%20Aake%20to%20dekho%20lyrics%20white%20screen%20sad%20%F0%9F%98%A2%20%23sadstatus%20%5B5VCwUIvOlQU%5D.mp3"
+    }
+  ];
+
+  const cards = [
+    { id: 1, front: "💕", back: "I Love You", message: "You means everything" },
+    { id: 2, front: "🌹", back: "Always Yours", message: "Today tomorrow forever" },
+    { id: 3, front: "✨", back: "You Are My World", message: "My happy my peace" }
+  ];
+
+  const reasons = [
+    { icon: "😊", text: "Your smile makes my day good" },
+    { icon: "💝", text: "You understand me so much" },
+    { icon: "🌟", text: "You make everything special" },
+    { icon: "🤗", text: "I feel safe with you" },
+    { icon: "💫", text: "You brings joy in my life" },
+    { icon: "🌈", text: "You makes my world colorful" }
+  ];
+
+  useEffect(() => {
+    if (currentSection === 11) {
+      generateHearts();
+      const interval = setInterval(generateHearts, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [currentSection]);
+
+  const generateHearts = () => {
+    const newHearts = Array.from({ length: 15 }, (_, i) => ({
+      id: Date.now() + i,
+      left: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: 3 + Math.random() * 2,
+      size: 20 + Math.random() * 30
+    }));
+    setHearts(prev => [...prev, ...newHearts].slice(-30));
+  };
+
+  const toggleCard = (id) => {
+    setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const playSong = (index) => {
+    if (isPlaying === index) {
+      audioRef.current?.pause();
+      setIsPlaying(null);
+    } else {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = songs[index].url;
+        audioRef.current.load();
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.log("Play error:", err);
+          });
         }
+      }
+      setIsPlaying(index);
+    }
+  };
+
+  const nextSection = () => {
+    if (currentSection < sections.length - 1) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      setIsPlaying(null);
+      setCurrentSection(currentSection + 1);
+    }
+  };
+
+  const restartExperience = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setIsPlaying(null);
+    setCurrentSection(0);
+    setFlippedCards({});
+  };
+
+  const sections = [
+    // Section 1: Welcome
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-pink-50 to-purple-100 flex items-center justify-center p-6">
+      <div className="text-center space-y-6 animate-fade-in">
+        <div className="text-7xl animate-bounce">👸</div>
+        <h1 className="text-5xl font-bold text-pink-600 animate-pulse">
+          Hey My Princess! 💕🎀
+        </h1>
+        <p className="text-xl text-gray-700 max-w-md mx-auto leading-relaxed">
+          I make something very special for you on this princess day. This is just for you...
+        </p>
+        <div className="flex justify-center space-x-2 my-4">
+          <Star className="w-6 h-6 text-yellow-400 animate-spin-slow" fill="currentColor" />
+          <Star className="w-6 h-6 text-yellow-400 animate-spin-slow" fill="currentColor" style={{animationDelay: '0.2s'}} />
+          <Star className="w-6 h-6 text-yellow-400 animate-spin-slow" fill="currentColor" style={{animationDelay: '0.4s'}} />
+        </div>
+        <button 
+          onClick={nextSection}
+          className="mt-8 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-110 shadow-2xl"
+        >
+          Click here to see! ✨
+        </button>
+      </div>
+    </div>,
+
+    // Section 2: A Note For You
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center p-6">
+      <div className="text-center space-y-8 animate-fade-in">
+        <div className="relative">
+          <Gift className="w-24 h-24 text-pink-500 mx-auto animate-bounce" />
+          <div className="absolute inset-0 bg-pink-300 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+        </div>
+        <h2 className="text-6xl font-bold text-pink-600">A Note For You 💕</h2>
+        <p className="text-xl text-gray-600">Something from my heart...</p>
+        <div className="mt-12">
+          <button 
+            onClick={nextSection}
+            className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-12 py-5 rounded-full font-semibold text-xl shadow-2xl hover:shadow-3xl transition-all transform hover:scale-110 animate-pulse"
+          >
+            Open My Heart 💝
+          </button>
+        </div>
+      </div>
+    </div>,
+
+    // Section 3: Love Letter
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center p-6">
+      <div className="max-w-2xl mx-auto text-center space-y-6 animate-fade-in">
+        <Mail className="w-20 h-20 text-pink-500 mx-auto animate-bounce" />
+        <h2 className="text-5xl font-bold text-pink-600">A Love Letter ❤️</h2>
+        <p className="text-gray-500 italic text-lg">From my heart to yours</p>
         
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
-            color: #333;
-            overflow-x: hidden;
-        }
-        
-        .dancing-font {
-            font-family: 'Dancing Script', cursive;
-        }
-        
-        .card {
-            transform-style: preserve-3d;
-            transition: all 0.5s ease;
-            box-shadow: 0 10px 30px -10px rgba(214, 51, 108, 0.3);
-        }
-        
-        .card:hover {
-            transform: translateY(-10px) rotateY(5deg);
-            box-shadow: 0 20px 40px -10px rgba(214, 51, 108, 0.4);
-        }
-        
-        .bounce {
-            animation: bounce 3s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .float {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-        
-        .heartbeat {
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.1); }
-            50% { transform: scale(1); }
-            75% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: var(--primary);
-            opacity: 0;
-            z-index: 999;
-            animation: confettiFall 5s linear forwards;
-        }
-        
-        .lantern {
-            position: fixed;
-            width: 40px;
-            height: 60px;
-            background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3ef7ad9d-f47c-477d-9ad7-6dea33301b3c.png') no-repeat;
-            opacity: 0;
-            z-index: 998;
-            animation: lanternFloat 8s ease-in forwards;
-        }
-        
-        @keyframes lanternFloat {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(10deg);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-    </style>
-</head>
-<body class="min-h-screen">
-    <!-- Hero Section -->
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-pink-100 to-rose-100 opacity-60"></div>
-        <div class="absolute top-0 left-0 w-full h-full flex flex-wrap overflow-hidden">
-            <!-- Confetti background -->
-            <div id="confetti-container"></div>
+        <div className="bg-white/90 backdrop-blur p-10 rounded-2xl shadow-2xl mt-8 text-left space-y-5 border-4 border-pink-200">
+          <p className="text-gray-700 leading-relaxed text-lg">
+            My Dear Princess,
+          </p>
+          <p className="text-gray-700 leading-relaxed text-lg">
+            When I am with you everything feels good. Your smile makes my whole day happy. When I hear you laugh all my problems goes away. Just having you near me is enough for making me feel complete.
+          </p>
+          <p className="text-gray-700 leading-relaxed text-lg">
+            You are my happiness, my peace, my everything. I promise to always take care of you, keep you happy and love you with all my heart.
+          </p>
+          <p className="text-gray-700 leading-relaxed text-lg">
+            Forever yours,<br/>
+            <span className="font-bold text-pink-600 text-xl">Your Jaan 💕</span>
+          </p>
         </div>
         
-        <div class="relative z-10 text-center px-4">
-            <h1 class="text-6xl md:text-8xl font-bold dancing-font text-rose-600 mb-6 bounce">
-                Happy Birthday!
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-700 mb-8 max-w-2xl mx-auto">
-                <span class="text-rose-600 font-semibold">My Dearest Love</span>, your special day is here! 
-                Even cartoon characters wanted to wish you an amazing birthday!
+        <button 
+          onClick={nextSection}
+          className="mt-8 bg-pink-500 hover:bg-pink-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 shadow-xl"
+        >
+          Continue ✨
+        </button>
+      </div>
+    </div>,
+
+    // Section 4: Why I Love You
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center p-6">
+      <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
+        <Heart className="w-20 h-20 text-pink-500 mx-auto animate-heartbeat" fill="currentColor" />
+        <h2 className="text-5xl font-bold text-purple-600">Why I Love You</h2>
+        <p className="text-gray-600 text-xl">So many reasons here are few...</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+          {reasons.map((reason, index) => (
+            <div 
+              key={index}
+              className="bg-white/80 backdrop-blur p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 border-2 border-pink-200"
+              style={{animationDelay: `${index * 0.1}s`}}
+            >
+              <div className="text-5xl mb-4">{reason.icon}</div>
+              <p className="text-gray-700 text-lg font-medium">{reason.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <button 
+          onClick={nextSection}
+          className="mt-12 bg-purple-500 hover:bg-purple-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 shadow-xl"
+        >
+          Continue ✨
+        </button>
+      </div>
+    </div>,
+
+    // Section 5: Playlist Intro
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center p-6">
+      <div className="text-center space-y-8 animate-fade-in">
+        <Music className="w-24 h-24 text-purple-500 mx-auto animate-pulse" />
+        <h2 className="text-5xl font-bold text-purple-600">
+          Songs For You
+        </h2>
+        <p className="text-gray-600 text-xl">I hope you like this songs</p>
+        <p className="text-gray-500 text-lg">Click on any song for listen ✨</p>
+        <button 
+          onClick={nextSection}
+          className="mt-8 bg-purple-500 hover:bg-purple-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-110 shadow-2xl"
+        >
+          See Songs 🎵
+        </button>
+      </div>
+    </div>,
+
+    // Section 6: Playlist Display
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center p-6">
+      <div className="max-w-3xl w-full space-y-8 animate-fade-in">
+        <h2 className="text-5xl font-bold text-center text-purple-600">
+          Songs For You
+        </h2>
+        <p className="text-center text-gray-600 text-lg">Tap to play music 🎵</p>
+        
+        <div className="space-y-6">
+          {songs.map((song, index) => (
+            <div 
+              key={index}
+              className="bg-white rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all cursor-pointer transform hover:scale-105 border-2 border-pink-200"
+              onClick={() => playSong(index)}
+            >
+              <div className="flex items-center space-x-6">
+                <div className={`w-24 h-24 rounded-xl bg-gradient-to-br ${song.color} flex items-center justify-center shadow-xl`}>
+                  {isPlaying === index ? (
+                    <Pause className="w-10 h-10 text-white" />
+                  ) : (
+                    <Play className="w-10 h-10 text-white" />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold text-gray-800">{song.title}</h3>
+                  <p className="text-gray-600 text-lg">{song.artist}</p>
+                </div>
+                {isPlaying === index && (
+                  <div className="flex items-center space-x-3">
+                    <Volume2 className="w-6 h-6 text-pink-500 animate-pulse" />
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-10 bg-pink-500 rounded-full animate-music-bar" style={{animationDelay: '0s'}}></div>
+                      <div className="w-2 h-8 bg-pink-400 rounded-full animate-music-bar" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-12 bg-pink-500 rounded-full animate-music-bar" style={{animationDelay: '0.2s'}}></div>
+                      <div className="w-2 h-9 bg-pink-400 rounded-full animate-music-bar" style={{animationDelay: '0.3s'}}></div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {isPlaying === index && (
+                <div className="mt-6 bg-gray-100 rounded-full h-3 overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 animate-progress shadow-lg"></div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <p className="text-gray-500 italic mb-6 text-lg">This heart is yours only for you 💕</p>
+          <button 
+            onClick={nextSection}
+            className="bg-pink-500 hover:bg-pink-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 shadow-xl"
+          >
+            Continue ✨
+          </button>
+        </div>
+      </div>
+    </div>,
+
+    // Section 7: Special Cards Intro
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center p-6">
+      <div className="text-center space-y-8 animate-fade-in">
+        <Heart className="w-24 h-24 text-pink-500 mx-auto animate-pulse" />
+        <h2 className="text-5xl font-bold text-pink-600">
+          Special Cards For You
+        </h2>
+        <p className="text-gray-600 text-xl">
+          Click each card to see message! 💌
+        </p>
+        <button 
+          onClick={nextSection}
+          className="mt-8 bg-pink-500 hover:bg-pink-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-110 shadow-2xl"
+        >
+          Show Cards 💕
+        </button>
+      </div>
+    </div>,
+
+    // Section 8: Interactive Cards
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center p-6">
+      <div className="max-w-5xl w-full space-y-8 animate-fade-in">
+        <h2 className="text-5xl font-bold text-center text-pink-600">
+          Special Cards For You
+        </h2>
+        <p className="text-center text-gray-600 text-xl">Click each card!</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+          {cards.map((card) => (
+            <div
+              key={card.id}
+              onClick={() => toggleCard(card.id)}
+              className="cursor-pointer perspective-1000"
+            >
+              <div className={`relative w-full h-80 transition-transform duration-700 transform-style-3d ${flippedCards[card.id] ? 'rotate-y-180' : ''}`}>
+                <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-pink-400 to-purple-400 rounded-2xl shadow-2xl flex items-center justify-center hover:shadow-3xl transition-shadow border-4 border-white">
+                  <span className="text-8xl">{card.front}</span>
+                </div>
+                <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl shadow-2xl flex items-center justify-center rotate-y-180 border-4 border-white">
+                  <div className="text-center p-6">
+                    <span className="text-3xl font-bold text-white block mb-4">{card.back}</span>
+                    <span className="text-lg text-white/90 italic block mb-4">{card.message}</span>
+                    <div className="text-5xl animate-bounce">💖</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <button 
+            onClick={nextSection}
+            className="bg-pink-500 hover:bg-pink-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 shadow-xl"
+          >
+            Continue ✨
+          </button>
+        </div>
+      </div>
+    </div>,
+
+    // Section 9: Promise
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center p-6">
+      <div className="max-w-3xl mx-auto text-center space-y-8 animate-fade-in">
+        <Sparkles className="w-20 h-20 text-purple-500 mx-auto animate-pulse" />
+        <h2 className="text-5xl font-bold text-purple-600">My Promise To You</h2>
+        
+        <div className="bg-white/90 backdrop-blur p-10 rounded-2xl shadow-2xl space-y-6 border-4 border-purple-200">
+          <div className="space-y-4 text-left">
+            <p className="text-gray-700 text-lg leading-relaxed flex items-start">
+              <span className="text-3xl mr-4">💝</span>
+              <span>I will always be there for you when you needs me</span>
             </p>
-            <div class="heartbeat inline-block">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="#d6336c">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-            </div>
+            <p className="text-gray-700 text-lg leading-relaxed flex items-start">
+              <span className="text-3xl mr-4">🌟</span>
+              <span>I will make you smile everyday</span>
+            </p>
+            <p className="text-gray-700 text-lg leading-relaxed flex items-start">
+              <span className="text-3xl mr-4">🤗</span>
+              <span>I will keeps you safe and protected always</span>
+            </p>
+            <p className="text-gray-700 text-lg leading-relaxed flex items-start">
+              <span className="text-3xl mr-4">💕</span>
+              <span>I will love you more and more each day</span>
+            </p>
+          </div>
         </div>
+
+        <button 
+          onClick={nextSection}
+          className="mt-8 bg-purple-500 hover:bg-purple-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 shadow-xl"
+        >
+          Continue ✨
+        </button>
+      </div>
+    </div>,
+
+    // Section 10: Transition
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center p-6">
+      <div className="text-center space-y-8 animate-fade-in">
+        <div className="animate-spin-slow text-8xl">💕</div>
+        <p className="text-3xl text-pink-600 font-bold">Something special is coming...</p>
+        <div className="flex justify-center space-x-2">
+          <div className="w-3 h-3 bg-pink-500 rounded-full animate-bounce" style={{animationDelay: '0s'}}></div>
+          <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+          <div className="w-3 h-3 bg-pink-500 rounded-full animate-bounce" style={{animationDelay: '0.4s'}}></div>
+        </div>
+        <button 
+          onClick={nextSection}
+          className="mt-8 bg-pink-500 hover:bg-pink-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all"
+        >
+          Continue
+        </button>
+      </div>
+    </div>,
+
+    // Section 11: Final Love Letter
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center p-6">
+      <div className="max-w-2xl mx-auto text-center space-y-8 animate-fade-in">
+        <div className="text-8xl mb-6 animate-bounce">💌</div>
+        <h2 className="text-5xl font-bold text-pink-600">My Heart Words</h2>
+        <p className="text-gray-600 italic text-xl">What I really wants to tell you...</p>
         
-        <div class="absolute bottom-10 left-0 w-full text-center">
-            <svg class="mx-auto w-12 h-12 text-rose-500 animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
+        <div className="bg-white/90 backdrop-blur p-10 rounded-2xl shadow-2xl space-y-6 text-left border-4 border-pink-200">
+          <p className="text-gray-700 leading-relaxed text-lg">
+            You are like stars I looks at every night and the songs that makes me feel happy. You really makes my days better and bright.
+          </p>
+          <p className="text-gray-700 leading-relaxed text-lg">
+            Every moment with you is special for me. Every time we laughs together becomes memory I keeps in my heart. You make normal days feels amazing.
+          </p>
+          <p className="text-gray-700 leading-relaxed text-lg">
+            Thank you for being you. Thank you for being mine.
+          </p>
         </div>
-    </section>
-    
-    <!-- Cartoon Wishes Section -->
-    <section class="py-20 px-4 max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl dancing-font text-rose-600 mb-4">
-                Birthday Wishes from Cartoon Friends
-            </h2>
-            <div class="w-24 h-1 bg-rose-400 mx-auto"></div>
+
+        <div className="mt-12">
+          <div className="relative inline-block">
+            <Mail className="w-40 h-40 text-blue-400 animate-pulse" />
+            <Heart className="w-16 h-16 text-red-500 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-heartbeat" fill="currentColor" />
+          </div>
+          <p className="text-gray-600 mt-6 text-lg">Sealing this letter with love...</p>
+          <p className="text-sm text-gray-500 mt-2">Don't stops now the best part is coming...</p>
         </div>
+
+        <button 
+          onClick={nextSection}
+          className="mt-8 bg-pink-500 hover:bg-pink-600 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 shadow-xl"
+        >
+          Seal The Letter ✨
+        </button>
+      </div>
+    </div>,
+
+    // Section 12: Beautiful Final Page
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-pink-100 flex items-center justify-center p-6 relative overflow-hidden">
+      {hearts.map(heart => (
+        <div
+          key={heart.id}
+          className="absolute text-pink-400 pointer-events-none animate-float-up"
+          style={{
+            left: `${heart.left}%`,
+            fontSize: `${heart.size}px`,
+            animationDelay: `${heart.delay}s`,
+            animationDuration: `${heart.duration}s`
+          }}
+        >
+          ❤️
+        </div>
+      ))}
+
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-yellow-300 animate-twinkle"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              fontSize: `${10 + Math.random() * 25}px`
+            }}
+          >
+            ✨
+          </div>
+        ))}
+      </div>
+
+      <div className="max-w-3xl mx-auto text-center space-y-8 animate-fade-in relative z-10">
+        <div className="relative inline-block mb-6">
+          <div className="w-40 h-40 bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400 rounded-full flex items-center justify-center animate-pulse-glow shadow-2xl">
+            <Heart className="w-20 h-20 text-white animate-heartbeat" fill="currentColor" />
+          </div>
+          <div className="absolute -inset-6 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-2xl opacity-50 animate-pulse"></div>
+        </div>
+
+        <h2 className="text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 animate-gradient mb-6">
+          Sealed With Love
+        </h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Mickey Mouse -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-rose-200 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cc87107a-92c6-455b-b520-1664b3d6d719.png" alt="Mickey Mouse wearing a party hat and holding balloons in front of a birthday cake, classic Disney style with bright colors" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Mickey Mouse</h3>
-                <p class="text-gray-600 mb-4">"Happy Birthday, pal! Hope your day is as fun as a day at Disneyland!"</p>
-                <div class="mt-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ff0000">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- SpongeBob -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-yellow-300 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d7549ae9-bf0c-4d37-8db7-98d735ad5aa0.png" alt="SpongeBob SquarePants laughing with a party hat on, standing in his pineapple house holding a colorful birthday cake, bright Nickelodeon cartoon style" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">SpongeBob</h3>
-                <p class="text-gray-600 mb-4">"Happy Birthday! I made you a Krabby Patty cake! Okay, maybe I ate some of it... but the thought counts!"</p>
-                <div class="mt-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffcc00">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- Hello Kitty -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-pink-300 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/06ac9e7c-cf1a-41d3-9054-4e7379397945.png" alt="Hello Kitty wearing a pink birthday crown and holding a basket of cupcakes, surrounded by hearts and stars in typical kawaii style" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Hello Kitty</h3>
-                <p class="text-gray-600 mb-4">"Sanrio blessings for your birthday! May your day be as sweet as strawberry cake!"</p>
-                <div class="mt-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ff9eb5">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- Pikachu -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-yellow-400 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/db24f252-bbe5-40ae-a184-535f10da53e2.png" alt="Pikachu cheering with sparks of electricity around him, wearing a party hat with Pokeball design, vibrant Pokemon anime style" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Pikachu</h3>
-                <p class="text-gray-600 mb-4">"Pika Pika! Happy Birthday! I'll shock your year with happiness!"</p>
-                <div class="mt-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#f6c101">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- Minions -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-blue-300 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b6e86983-b298-4a9c-b586-74af860f47b3.png" alt="Group of Minions from Despicable Me dressed in party gear throwing confetti and making funny faces, Illumination animation style" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Minions</h3>
-                <p class="text-gray-600 mb-4">"BANANA! Tulaliloo ti amo! Happy Birthday from all of us!"</p>
-                <div class="mt-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#f1c40f">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- Bugs Bunny -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-gray-300 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3020bba3-8282-4f4c-bbd7-c87d47be0cd7.png" alt="Bugs Bunny leaning on a carrot with one foot crossed over the other, wearing sunglasses and giving a thumbs up, classic Warner Bros. cartoon style" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Bugs Bunny</h3>
-                <p class="text-gray-600 mb-4">"Eh, what's up, birthday girl? Hope it's a totally looney-tunes wonderful day!"</p>
-                <div class="mt-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#666666">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Asian Actors Wishes Section -->
-    <section class="py-20 px-4 max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl dancing-font text-rose-600 mb-4">
-                International Birthday Wishes
-            </h2>
-            <div class="w-24 h-1 bg-rose-400 mx-auto"></div>
-            <p class="text-xl text-gray-600 mt-4">Celebrities from across Asia send their warmest wishes</p>
+        <div className="space-y-6 mb-8">
+          <p className="text-4xl md:text-5xl font-bold text-gray-800 animate-bounce-slow">
+            I Love You So Much 💕
+          </p>
+
+          <div className="flex justify-center space-x-3 my-6">
+            {[...Array(9)].map((_, i) => (
+              <Heart 
+                key={i} 
+                className="w-8 h-8 text-pink-500 animate-bounce" 
+                fill="currentColor"
+                style={{animationDelay: `${i * 0.1}s`}}
+              />
+            ))}
+          </div>
+
+          <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 animate-pulse">
+            Forever Yours 💕
+          </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Korean Actor 1 - Lee Min-ho -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-blue-200 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/87a68ac1-5454-41de-a747-82e977d29764.png" alt="Lee Min-ho smiling in elegant suit with birthday cake background" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Lee Min-ho</h3>
-                <p class="text-gray-600 mb-2">"생일 축하합니다! (Happy Birthday!) May your year be as bright as your beautiful smile!"</p>
-                <p class="text-sm text-gray-500">Korean Actor</p>
-            </div>
-
-            <!-- Korean Actor 2 - Hyun Bin -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-blue-300 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e2b38e0c-3090-4d51-89c3-2543240856d6.png" alt="Hyun Bin in stylish formal wear holding champagne flute" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Hyun Bin</h3>
-                <p class="text-gray-600 mb-2">"사랑하는 당신의 생일을 축하합니다 (Happy birthday)! Your happiness is my greatest wish."</p>
-                <p class="text-sm text-gray-500">Korean Actor</p>
-            </div>
-
-            <!-- Chinese Actor 1 - Wang Yibo -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-red-200 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dfc53152-5b3c-42e4-99e5-57bbd3beab52.png" alt="Wang Yibo in casual chic outfit with festive balloons" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Wang Yibo</h3>
-                <p class="text-gray-600 mb-2">"生日快乐! (Happy Birthday!) May all your dreams come true this year!"</p>
-                <p class="text-sm text-gray-500">Chinese Actor</p>
-            </div>
-
-            <!-- Chinese Actor 2 - Xiao Zhan -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-red-300 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2c2b71df-32c9-404f-b58e-c56c8392db2d.png" alt="Xiao Zhan smiling warmly with confetti background" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Xiao Zhan</h3>
-                <p class="text-gray-600 mb-2">"祝你生日快乐! (Wishing you a happy birthday!) May your special day be filled with joy!"</p>
-                <p class="text-sm text-gray-500">Chinese Actor</p>
-            </div>
-
-            <!-- Japanese Actor 1 - Takeru Satoh -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-rose-200 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/223b8667-d51c-4922-9614-6dbb1ef6a0a0.png" alt="Takeru Satoh in traditional kimono celebration" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Takeru Satoh</h3>
-                <p class="text-gray-600 mb-2">"お誕生日おめでとうございます (Happy Birthday)! May your year be as wonderful as you are!"</p>
-                <p class="text-sm text-gray-500">Japanese Actor</p>
-            </div>
-
-            <!-- Japanese Actor 2 - Kento Yamazaki -->
-            <div class="card bg-white rounded-xl p-6 flex flex-col items-center text-center hover:bg-rose-50 transition-colors">
-                <div class="w-40 h-40 mb-6 overflow-hidden rounded-full border-4 border-rose-300 shadow-lg">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b0c62bc3-fe29-430a-ba8b-fe39771b67e3.png" alt="Kento Yamazaki with birthday cake and flowers" class="w-full h-full object-cover" />
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Kento Yamazaki</h3>
-                <p class="text-gray-600 mb-2">"素晴らしい1年になりますように (Wishing you a wonderful year)! Happy Birthday!"</p>
-                <p class="text-sm text-gray-500">Japanese Actor</p>
-            </div>
+        <div className="bg-white/50 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border-4 border-pink-300 mb-8">
+          <p className="text-gray-700 font-bold text-xl mb-4">{dateString}</p>
+          <p className="text-pink-600 italic text-xl leading-relaxed mb-4">
+            "No matter how crazy the world gets you are my calm. No matter how uncertain life is you are my sure thing. Forever and always you are mine." 💖
+          </p>
+          <p className="text-gray-600 text-lg mt-4">
+            You makes everything better just by being there. I am so lucky to have you in my life.
+          </p>
         </div>
-    </section>
 
-    <!-- Love Letter Section -->
-    <section class="py-20 px-4 bg-rose-50">
-        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="md:flex">
-                <div class="md:w-2/5 bg-rose-100 p-8 flex items-center justify-center">
-                    <div class="text-center">
-                        <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4c5d2bfc-085b-4cf4-8751-88b15f395aa5.png" alt="Romantic pink envelope with heart-shaped seal on wooden table with rose petals scattered around it, soft focus background" class="w-full h-full object-cover" />
-                        </div>
-                        <h3 class="text-2xl font-bold text-rose-700 mb-2 dancing-font">My Dearest</h3>
-                        <p class="text-gray-600">With all my love!</p>
-                    </div>
-                </div>
-                <div class="md:w-3/5 p-8">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-6 dancing-font">My Special Message For You</h2>
-                    <div class="prose max-w-none text-gray-700">
-                        <p>My Love,</p>
-                        <p>On your special day, I wanted to create something as unique and wonderful as you are. That's why even your favorite cartoon characters wanted to join in celebrating you!</p>
-                        <p>You bring joy, laughter and love into my life every day - much more than any of these characters bring to their shows. Your kindness sparkles brighter than Pikachu's electricity, your warmth is more comforting than Hello Kitty's world, and your smile is more enchanting than any Disney magic.</p>
-                        <p>May this birthday be the start of your most wonderful year yet - filled with love, happiness and all the things that bring you joy. I'm so grateful to be part of your life's journey.</p>
-                        <p>With all my heart,<br>Your Loving Partner</p>
-                    </div>
-                </div>
-            </div>
+        <div className="space-y-4">
+          <button 
+            onClick={restartExperience}
+            className="block w-full bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 text-white px-10 py-5 rounded-full font-bold text-xl shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 animate-shimmer"
+          >
+            See It Again ✨
+          </button>
+          <button 
+            className="block w-full bg-gradient-to-r from-green-400 via-teal-400 to-green-400 text-white px-10 py-5 rounded-full font-bold text-xl shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105"
+          >
+            Send Virtual Kiss 💋
+          </button>
         </div>
-    </section>
-    
-    <!-- Final Celebration -->
-    <section class="py-20 px-4 text-center bg-gradient-to-r from-rose-100 to-pink-100">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl md:text-5xl dancing-font text-rose-700 mb-8 float">Make a Wish!</h2>
-            <div class="mb-10 mx-auto max-w-md">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/03f22a2e-068e-40ef-a40c-f0c5dabf0430.png" alt="Beautiful birthday cake with multiple tiers, pink frosting and flowers, surrounded by floating hearts and sparkles in magical animation style" class="w-full rounded-xl shadow-lg" />
-            </div>
-            <button id="wishBtn" class="px-8 py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-full text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-50 shadow-lg">
-                Blow Out the Candles
-            </button>
+
+        <div className="mt-8 p-6 bg-pink-50 rounded-2xl border-2 border-pink-200">
+          <p className="text-base text-gray-600 animate-pulse">
+            Made with lots of love only for you 💕✨
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            From Your Jaan
+          </p>
         </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="py-10 bg-rose-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="mb-2">Created with all my love for your special day</p>
-            <p>© <span id="year"></span> Birthday Wishes from Your Favorite Cartoons</p>
-        </div>
-    </footer>
-    
-    <script>
-        // Set current year in footer
-        document.getElementById('year').textContent = new Date().getFullYear();
-        
-        // Confetti effect
-        function createConfetti() {
-            const container = document.getElementById('confetti-container');
-            container.innerHTML = '';
-            
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                
-                // Random properties
-                const size = Math.random() * 10 + 5;
-                const posX = Math.random() * window.innerWidth;
-                const delay = Math.random() * 5;
-                const duration = Math.random() * 3 + 3;
-                
-                // Different shapes
-                const shapes = ['circle', 'square', 'triangle'];
-                const shape = shapes[Math.floor(Math.random() * shapes.length)];
-                
-                // Different colors
-                const colors = ['#ff6b8b', '#ffb8c6', '#d6336c', '#ff8fab', '#f06595'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                
-                confetti.style.width = `${size}px`;
-                confetti.style.height = `${size}px`;
-                confetti.style.left = `${posX}px`;
-                confetti.style.backgroundColor = color;
-                confetti.style.animationDelay = `${delay}s`;
-                confetti.style.animationDuration = `${duration}s`;
-                
-                // Apply shapes
-                if (shape === 'circle') {
-                    confetti.style.borderRadius = '50%';
-                }
-                
-                container.appendChild(confetti);
-            }
+      </div>
+    </div>
+  ];
+
+  return (
+    <div className="font-sans">
+      <audio ref={audioRef} preload="auto" crossOrigin="anonymous" />
+      <style>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        
-        // Initialize some confetti
-        createConfetti();
-        
-        // Blow out candles button
-        document.getElementById('wishBtn').addEventListener('click', function() {
-            createConfetti();
-            
-            // Create floating hearts animation
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ff6b8b">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                        </svg>
-                    `;
-                    heart.style.position = 'fixed';
-                    heart.style.bottom = '20%';
-                    heart.style.left = `${Math.random() * 100}%`;
-                    heart.style.transform = 'translateY(0)';
-                    heart.style.zIndex = '999';
-                    heart.style.animation = `floatUp ${Math.random() * 2 + 2}s ease-in forwards`;
-                    
-                    document.body.appendChild(heart);
-                    
-                    // Remove heart after animation
-                    setTimeout(() => {
-                        heart.remove();
-                    }, 3000);
-                }, i * 200);
-            }
-            
-            // Create keyframes for floating hearts
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes floatUp {
-                    to {
-                        transform: translateY(-100vh) rotate(360deg);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Show alert
-            alert("Your wish will come true my love! Happy Happy Birthday!");
-            
-            // Create floating lanterns
-            for (let i = 0; i < 10; i++) {
-                setTimeout(() => {
-                    const lantern = document.createElement('div');
-                    lantern.classList.add('lantern');
-                    lantern.style.left = `${Math.random() * 100}%`;
-                    lantern.style.animationDelay = `${i * 0.5}s`;
-                    document.body.appendChild(lantern);
-                    
-                    setTimeout(() => {
-                        lantern.remove();
-                    }, 8000);
-                }, i * 500);
-            }
-        });
-    </script>
-</body>
-</html>
+        @keyframes float-up {
+          0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        @keyframes twinkle {
+          0%, 100% { opacity: 0; transform: scale(0); }
+          50% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes heartbeat {
+          0%, 100% { transform: scale(1); }
+          25% { transform: scale(1.15); }
+          50% { transform: scale(1); }
+          75% { transform: scale(1.2); }
+        }
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.6); }
+          50% { box-shadow: 0 0 60px rgba(236, 72, 153, 0.9); }
+        }
+        @keyframes gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
+        }
+        @keyframes music-bar {
+          0%, 100% { height: 1.5rem; }
+          50% { height: 3rem; }
+        }
+        @keyframes progress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+        .animate-float-up {
+          animation: float-up linear forwards;
+        }
+        .animate-twinkle {
+          animation: twinkle 2s ease-in-out infinite;
+        }
+        .animate-heartbeat {
+          animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        .animate-pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        .animate-gradient {
+          background-size: 200% auto;
+          animation: gradient 3s ease infinite;
+        }
+        .animate-shimmer {
+          background-size: 200% auto;
+          animation: shimmer 3s linear infinite;
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 2s ease-in-out infinite;
+        }
+        .animate-music-bar {
+          animation: music-bar 0.8s ease-in-out infinite;
+        }
+        .animate-progress {
+          animation: progress 30s linear infinite;
+        }
+        .animate-spin-slow {
+          animation: spin-slow 3s linear infinite;
+        }
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        .transform-style-3d {
+          transform-style: preserve-3d;
+        }
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+      `}</style>
+      {sections[currentSection]}
+    </div>
+  );
+};
 
+export default PrincessDayExperience;
